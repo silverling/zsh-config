@@ -19,6 +19,7 @@ zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/clipboard.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/key-bindings.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/completion.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/directories.zsh
+zinit snippet https://github.com/silverling/zsh-config/raw/main/snippets/common-aliases.zsh
 
 
 # == fzf ==
