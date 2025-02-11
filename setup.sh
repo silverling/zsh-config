@@ -25,6 +25,11 @@ error() {
 
 # == install git ==
 install_git() {
+    if [ -x "$(command -v git)" ]; then
+        info "git already installed"
+        return
+    fi
+
     info "Install git"
     if [ $distro = "arch" ]; then
         sudo pacman -S git --noconfirm
@@ -41,6 +46,11 @@ install_git() {
 
 # == install curl ==
 install_curl() {
+    if [ -x "$(command -v curl)" ]; then
+        info "curl already installed"
+        return
+    fi
+
     info "Install curl"
     if [ $distro = "arch" ]; then
         sudo pacman -S curl --noconfirm
@@ -57,6 +67,11 @@ install_curl() {
 
 # == install zsh ==
 install_zsh() {
+    if [ -x "$(command -v zsh)" ]; then
+        info "zsh already installed"
+        return
+    fi
+
     info "Install zsh"
     if [ $distro = "arch" ]; then
         sudo pacman -S zsh --noconfirm
@@ -73,7 +88,7 @@ install_zsh() {
 
 # == install starship ==
 install_starship() {
-    if [ -f /usr/local/bin/starship ]; then
+    if [ -x "$(command -v starship)" ]; then
         info "starship already installed"
         return
     fi
@@ -136,6 +151,15 @@ main() {
     info "Done"
     cat <<EOF
 Please relogin or run the following command to apply the changes:
+
+    exec zsh
+
+If you need network proxy, please set the following environment variables:
+
+    export http_proxy=http://<proxy>:<port>
+    export https_proxy=http://<proxy>:<port>
+
+then:
 
     exec zsh
 
