@@ -1,11 +1,31 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 
 set -eu
+
+BOLD="$(tput bold 2>/dev/null || printf '')"
+GREY="$(tput setaf 0 2>/dev/null || printf '')"
+UNDERLINE="$(tput smul 2>/dev/null || printf '')"
+RED="$(tput setaf 1 2>/dev/null || printf '')"
+GREEN="$(tput setaf 2 2>/dev/null || printf '')"
+YELLOW="$(tput setaf 3 2>/dev/null || printf '')"
+BLUE="$(tput setaf 4 2>/dev/null || printf '')"
+MAGENTA="$(tput setaf 5 2>/dev/null || printf '')"
+NO_COLOR="$(tput sgr0 2>/dev/null || printf '')"
+
 distro=$(cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
 
+# == print functions ==
+info() {
+    printf '%s\n' "${BOLD}${GREY}==>${NO_COLOR} $*"
+}
+
+error() {
+    printf '%s\n' "${RED}==x $*${NO_COLOR}" >&2
+}
+
 # == install zsh ==
-function install_zsh {
-    echo "Install zsh"
+install_zsh() {
+    info "Install zsh"
     if [ $distro = "arch" ]; then
         sudo pacman -S zsh --noconfirm
     elif [ $distro = "ubuntu" ]; then
@@ -13,64 +33,64 @@ function install_zsh {
     elif [ $distro = "debian" ]; then
         sudo apt install zsh -y
     else
-        echo "Unknown distro"
+        error "Unknown distro"
         exit 1
     fi
-    echo "zsh installed"
+    info "zsh installed"
 }
 
 # == install starship ==
-function install_starship {
+install_starship() {
     if [ -f /usr/local/bin/starship ]; then
-        echo "starship already installed"
+        info "starship already installed"
         return
     fi
 
-    echo "Install starship"
+    info "Install starship"
     if [ $distro = "arch" ]; then
         sudo pacman -S starship --noconfirm
     else
-        curl -sS https://starship.rs/install.sh | sh -s -- -y
+        curl -sS https://starship.rs/install.sh | sh -s -y
         if [ $? -ne 0 ]; then
-            echo "Failed to install starship"
+            error "Failed to install starship"
             exit 1
         fi
     fi
-    echo "starship installed"
+    info "starship installed"
 }
 
 # == backup old zshrc ==
-function backup_zshrc {
+backup_zshrc() {
     if [ -f $HOME/.zshrc ]; then
         mv $HOME/.zshrc $HOME/.zshrc.bak
     fi
 }
 
 # == download zshrc ==
-function download_zshrc {
+download_zshrc() {
     curl -sS https://raw.githubusercontent.com/silverling/zsh-config/main/zshrc >$HOME/.zshrc
 }
 
 # == backup old starship.toml ==
-function backup_starship_toml {
+backup_starship_toml() {
     if [ -f $HOME/.config/starship.toml ]; then
         mv $HOME/.config/starship.toml $HOME/.config/starship.toml.bak
     fi
 }
 
 # == download starship.toml ==
-function download_starship_toml {
+download_starship_toml() {
     mkdir -p $HOME/.config
     curl -sS https://raw.githubusercontent.com/silverling/zsh-config/main/starship.toml >$HOME/.config/starship.toml
 }
 
 # == set default shell ==
-function set_default_shell {
+set_default_shell() {
     chsh -s $(which zsh)
 }
 
 # == main ==
-function main {
+main() {
     install_zsh
     install_starship
     backup_zshrc
@@ -79,7 +99,7 @@ function main {
     download_starship_toml
     set_default_shell
 
-    echo "Done"
+    info "Done"
     cat <<EOF
 Please relogin or run the following command to apply the changes:
 
