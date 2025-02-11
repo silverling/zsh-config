@@ -23,6 +23,38 @@ error() {
     printf '%s\n' "${RED}==x $*${NO_COLOR}" >&2
 }
 
+# == install git ==
+install_git() {
+    info "Install git"
+    if [ $distro = "arch" ]; then
+        sudo pacman -S git --noconfirm
+    elif [ $distro = "ubuntu" ]; then
+        sudo apt install git -y
+    elif [ $distro = "debian" ]; then
+        sudo apt install git -y
+    else
+        error "Unknown distro"
+        exit 1
+    fi
+    info "git installed"
+}
+
+# == install curl ==
+install_curl() {
+    info "Install curl"
+    if [ $distro = "arch" ]; then
+        sudo pacman -S curl --noconfirm
+    elif [ $distro = "ubuntu" ]; then
+        sudo apt install curl -y
+    elif [ $distro = "debian" ]; then
+        sudo apt install curl -y
+    else
+        error "Unknown distro"
+        exit 1
+    fi
+    info "curl installed"
+}
+
 # == install zsh ==
 install_zsh() {
     info "Install zsh"
@@ -91,6 +123,8 @@ set_default_shell() {
 
 # == main ==
 main() {
+    install_git
+    install_curl
     install_zsh
     install_starship
     backup_zshrc
