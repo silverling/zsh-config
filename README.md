@@ -2,15 +2,10 @@
 
 This repo contains my zsh config files. It's mainly based on `zinit` framework.
 
-## Step by step
+## Setup
 
-- Install `zsh`, and some common tools: `git`, `curl`
-- Setup `starship`
-  ```bash
-  curl -sS https://starship.rs/install.sh | sh
-  curl -sSL https://github.com/silverling/zsh-config/raw/main/starship.toml -o ~/.config/starship.toml
-  ```
-- Setup `zinit`
-  ```bash
-  curl -sSL https://github.com/silverling/zsh-config/raw/main/zshrc -o ~/.zshrc
-  ```
+```bash
+curl -sS https://raw.githubusercontent.com/silverling/zsh-config/main/setup.sh | bash
+```
+
+This script will install `zsh` and `starship` if they are not installed, and then download the `zshrc` file to `~/.zshrc` and `starship.toml` to `~/.config/starship.toml`.

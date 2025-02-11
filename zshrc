@@ -19,7 +19,6 @@ zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/clipboard.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/key-bindings.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/completion.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/directories.zsh
-zinit snippet https://github.com/silverling/zsh-config/raw/main/snippets/common-aliases.zsh
 
 
 # == fzf ==
@@ -34,3 +33,23 @@ zinit ice has'fzf' depth'1' wait lucid; zinit light joshskidmore/zsh-fzf-history
 ## install starship: curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 autoload -Uz compinit && compinit
+
+
+# == common env ==
+export EDITOR=vim
+
+
+# == common alias ==
+alias cs="${EDITOR:-vim} $HOME/.zshrc"   # config shell
+alias sc='exec zsh'                     # source config
+
+alias ls='ls -h --color=tty '
+alias ll='ls -l '
+alias la='ls -la'
+alias sudo='sudo -E '
+alias diff='diff --color=auto'
+
+alias c='clear'
+alias sizeof='du -h --max-depth=0'
+alias showpath="sed 's/:/\n/g' <<< \$PATH"
+alias dec='printf "%d\n"'               # decimal
