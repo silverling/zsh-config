@@ -7,11 +7,11 @@ distro=$(cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
 function install_zsh {
     echo "Install zsh"
     if [ $distro = "arch" ]; then
-        sudo pacman -S zsh
+        sudo pacman -S zsh --noconfirm
     elif [ $distro = "ubuntu" ]; then
-        sudo apt install zsh
+        sudo apt install zsh -y
     elif [ $distro = "debian" ]; then
-        sudo apt install zsh
+        sudo apt install zsh -y
     else
         echo "Unknown distro"
         exit 1
@@ -28,9 +28,9 @@ function install_starship {
 
     echo "Install starship"
     if [ $distro = "arch" ]; then
-        sudo pacman -S starship
+        sudo pacman -S starship --noconfirm
     else
-        curl -sS https://starship.rs/install.sh | bash
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
         if [ $? -ne 0 ]; then
             echo "Failed to install starship"
             exit 1
