@@ -37,6 +37,8 @@ install_git() {
         sudo apt install git -y
     elif [ $distro = "debian" ]; then
         sudo apt install git -y
+    elif [ $distro = "msys2" ]; then
+        pacman -S git --noconfirm
     else
         error "Unknown distro"
         exit 1
@@ -58,6 +60,8 @@ install_curl() {
         sudo apt install curl -y
     elif [ $distro = "debian" ]; then
         sudo apt install curl -y
+    elif [ $distro = "msys2" ]; then
+        pacman -S curl --noconfirm
     else
         error "Unknown distro"
         exit 1
@@ -79,6 +83,8 @@ install_zsh() {
         sudo apt install zsh -y
     elif [ $distro = "debian" ]; then
         sudo apt install zsh -y
+    elif [ $distro = "msys2" ]; then
+        pacman -S zsh --noconfirm
     else
         error "Unknown distro"
         exit 1
@@ -97,13 +103,39 @@ install_starship() {
     if [ $distro = "arch" ]; then
         sudo pacman -S starship --noconfirm
     else
-        curl -sS https://starship.rs/install.sh | sh -s -y
+        if [ $distro = "msys2" ]; then
+            [ -d "/usr/local/bin" ] || mkdir -p /usr/local/bin
+        fi
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
         if [ $? -ne 0 ]; then
             error "Failed to install starship"
             exit 1
         fi
     fi
     info "starship installed"
+}
+
+# == install unzip ==
+install_unzip() {
+    if [ -x "$(command -v unzip)" ]; then
+        info "unzip already installed"
+        return
+    fi
+
+    info "Install unzip"
+    if [ $distro = "arch" ]; then
+        sudo pacman -S unzip --noconfirm
+    elif [ $distro = "ubuntu" ]; then
+        sudo apt install unzip -y
+    elif [ $distro = "debian" ]; then
+        sudo apt install unzip -y
+    elif [ $distro = "msys2" ]; then
+        pacman -S unzip --noconfirm
+    else
+        error "Unknown distro"
+        exit 1
+    fi
+    info "unzip installed"
 }
 
 # == backup old zshrc ==
