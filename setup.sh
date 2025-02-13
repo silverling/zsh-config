@@ -165,6 +165,12 @@ download_starship_toml() {
 
 # == set default shell ==
 set_default_shell() {
+    if [ $distro = "msys2" ]; then
+        info "Skip setting default shell for MSYS2."
+        info "Learn how to set default shell in MSYS2: https://www.msys2.org/docs/terminals/"
+        return
+    fi
+
     chsh -s $(which zsh)
 }
 
