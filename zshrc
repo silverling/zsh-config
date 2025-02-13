@@ -35,23 +35,24 @@ zinit light joshskidmore/zsh-fzf-history-search
 eval "$(starship init zsh)"
 autoload -Uz compinit && compinit
 
-# == other customizations ==
-if [ -d $HOME/.zshrc.d ]; then
-    for f in $HOME/.zshrc.d/*.zsh; do
-        source $f
-    done
-fi
-
 # == path ==
+append_path() {
+    local _path="$1"
+    if [ -d "$_path" ] && [[ ":$PATH:" != *":$_path:"* ]]; then
+        export PATH="${PATH:+"$PATH:"}$_path"
+    fi
+}
 export PATH="$HOME/.local/bin:$PATH"
 
 # == common env ==
-export EDITOR=vim
+export EDITOR=nvim
 [ "${LC_ALL}x" = "x" ] && export LC_ALL=en_US.UTF-8
 
 # == common alias ==
-alias cs="${EDITOR:-vim} $HOME/.zshrc" # config shell
-alias sc='exec zsh'                    # source config
+alias vi='nvim'
+alias vim='nvim'
+alias cs="${EDITOR:-nvim} $HOME/.zshrc" # config shell
+alias sc='exec zsh'                     # source config
 
 alias ls='ls -h --color=tty '
 alias ll='ls -l '
@@ -99,8 +100,9 @@ function disable_proxy() {
 export GOPATH="$HOME/.go"
 
 # == nodejs ==
+## install n: curl -L https://bit.ly/n-install | bash
+## note: n is not compatible with msys2
 export N_PREFIX="$HOME/.n"
-[[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin" # Added by n-install (see http://git.io/n-install-repo).
 alias pp='pnpm'
 
 # == python ==
@@ -109,3 +111,11 @@ export UV_PYTHON_PREFERENCE="only-managed"
 export UV_INDEX="https://mirrors.pku.edu.cn/pypi/web/simple"
 export UV_DEFAULT_INDEX="https://mirrors.pku.edu.cn/pypi/web/simple"
 export VIRTUAL_ENV_DISABLE_PROMPT=true
+
+# Make sure to put this at the end of the file, the customizations can override the settings above
+# == other customizations ==
+if [ -d $HOME/.zshrc.d ]; then
+    for f in $HOME/.zshrc.d/*.zsh; do
+        source $f
+    done
+fi
