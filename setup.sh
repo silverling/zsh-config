@@ -147,7 +147,7 @@ backup_zshrc() {
 
 # == download zshrc ==
 download_zshrc() {
-    curl -sS https://raw.githubusercontent.com/silverling/zsh-config/main/zshrc >$HOME/.zshrc
+    curl -sSL https://raw.githubusercontent.com/silverling/zsh-config/main/zshrc -o $HOME/.zshrc
 }
 
 # == backup old starship.toml ==
@@ -160,7 +160,7 @@ backup_starship_toml() {
 # == download starship.toml ==
 download_starship_toml() {
     mkdir -p $HOME/.config
-    curl -sS https://raw.githubusercontent.com/silverling/zsh-config/main/starship.toml >$HOME/.config/starship.toml
+    curl -sSL https://raw.githubusercontent.com/silverling/zsh-config/main/starship.toml -o $HOME/.config/starship.toml
 }
 
 # == set default shell ==

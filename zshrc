@@ -21,28 +21,41 @@ zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/key-bindings.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/completion.zsh
 zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/lib/directories.zsh
 
-# == fzf ==
-zinit ice has'fzf'
-zinit snippet https://github.com/ohmyzsh/ohmyzsh/raw/master/plugins/fzf/fzf.plugin.zsh
-ZSH_FZF_HISTORY_SEARCH_EVENT_NUMBERS=0
-ZSH_FZF_HISTORY_SEARCH_DATES_IN_SEARCH=0
-ZSH_FZF_HISTORY_SEARCH_REMOVE_DUPLICATES=1
-zinit ice has'fzf' depth'1' wait lucid
-zinit light joshskidmore/zsh-fzf-history-search
+# == keybindings ==
+bindkey -e
+bindkey '^[[H' beginning-of-line        # Home
+bindkey '^[[F' end-of-line              # End
+bindkey '^H'   backward-kill-word       # Ctrl + Backspace
+## non-alphabetical chars to considered be the part of word, this is useful for kill-word
+export WORDCHARS=''
+bindkey '^[[1;5D' backward-word                     # Ctrl+Left
+bindkey '^[[1;5C' forward-word                      # Ctrl+Right
+bindkey '^[[A' history-beginning-search-backward    # Up key
+bindkey '^[[B' history-beginning-search-forward     # Down key
+## DO NOT EAT MY SPACE!
+export ZLE_REMOVE_SUFFIX_CHARS=''
 
-# == starship ==
+# == starship(prompt) ==
 ## install starship: curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 autoload -Uz compinit && compinit
 
 # == path ==
+prepend_path() {
+    local _path="$1"
+    if [ -d "$_path" ] && [[ ":$PATH:" != *":$_path:" ]]; then
+        export PATH="$_path${PATH:+":$PATH"}"
+    fi
+}
+
 append_path() {
     local _path="$1"
     if [ -d "$_path" ] && [[ ":$PATH:" != *":$_path:"* ]]; then
         export PATH="${PATH:+"$PATH:"}$_path"
     fi
 }
-export PATH="$HOME/.local/bin:$PATH"
+
+prepend_path "$HOME/.local/bin"
 
 # == common env ==
 export EDITOR=nvim
@@ -51,7 +64,7 @@ export EDITOR=nvim
 # == common alias ==
 alias vi='nvim'
 alias vim='nvim'
-alias cs="${EDITOR:-nvim} $HOME/.zshrc" # config shell
+alias cs="${EDITOR} $HOME/.zshrc" # config shell
 alias sc='exec zsh'                     # source config
 
 alias ls='ls -h --color=tty '
@@ -103,6 +116,7 @@ export GOPATH="$HOME/.go"
 ## install n: curl -L https://bit.ly/n-install | bash
 ## note: n is not compatible with msys2
 export N_PREFIX="$HOME/.n"
+prepend_path "$N_PREFIX/bin"
 alias pp='pnpm'
 
 # == python ==
@@ -112,7 +126,12 @@ export UV_INDEX="https://mirrors.pku.edu.cn/pypi/web/simple"
 export UV_DEFAULT_INDEX="https://mirrors.pku.edu.cn/pypi/web/simple"
 export VIRTUAL_ENV_DISABLE_PROMPT=true
 
-# Make sure to put this at the end of the file, the customizations can override the settings above
+# == micromamba ==
+alias mm='micromamba'
+alias ma='micromamba activate'
+alias me='micromamba deactivate'
+
+# Make sure to put this at the end of the file, so these customizations can override the settings above
 # == other customizations ==
 if [ -d $HOME/.zshrc.d ]; then
     for f in $HOME/.zshrc.d/*.zsh; do
