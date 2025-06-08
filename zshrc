@@ -32,8 +32,13 @@ bindkey '^[[1;5D' backward-word                     # Ctrl+Left
 bindkey '^[[1;5C' forward-word                      # Ctrl+Right
 bindkey '^[[A' history-beginning-search-backward    # Up key
 bindkey '^[[B' history-beginning-search-forward     # Down key
-## DO NOT EAT MY SPACE!
-export ZLE_REMOVE_SUFFIX_CHARS=''
+
+# == zsh params ==
+# man 1 zshparam
+# Don't eat space after '<Tab>' followed by '&' or '|'
+ZLE_SPACE_SUFFIX_CHARS=$'&|'
+# Eat space after '<Tab>' followed by ')', etc.
+ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;)'
 
 # == starship(prompt) ==
 ## install starship: curl -sS https://starship.rs/install.sh | sh
